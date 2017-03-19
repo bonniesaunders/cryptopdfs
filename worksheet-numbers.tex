@@ -1,0 +1,232 @@
+% XeLaTeX can use any Mac OS X font. See the setromanfont command below.
+% Input to XeLaTeX is full Unicode, so Unicode characters can be typed directly into the source.
+% The next lines tell TeXShop to typeset with xelatex, and to open and save the source with Unicode encoding.
+%!TEX TS-program = xelatex
+%!TEX encoding = UTF-8 Unicode
+
+\documentclass[12pt]{article}
+\usepackage[landscape, margin=.4in]{geometry}              % See geometry.pdf to learn the layout options. There are lots.
+\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}
+\usepackage{ifthen}
+\usepackage{titlesec}
+\usepackage{xcolor}
+\usepackage{array}
+\usepackage{xstring}
+
+% Will Robertson's fontspec.sty can be used to simplify font choices.
+% To experiment, open /Applications/Font Book to examine the fonts provided on Mac OS X,
+% and change "Hoefler Text" to any of these choices.
+\usepackage{fontspec,xltxtra,xunicode}
+\defaultfontfeatures{Mapping=tex-text}
+\setromanfont[Mapping=tex-text]{Times}
+\setsansfont[Scale=MatchLowercase,Mapping=tex-text]{Gill Sans}
+\setmonofont[Scale=MatchLowercase]{SimHei}
+
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+
+    \newcommand{\messagename}{Friends are those...}
+    \newcommand{\cipher}{Multiplicative}
+    \newcommand{\key}{3}
+    \newboolean{numbers}
+    \setboolean{numbers}{false}
+    \newcounter{chrnum}
+    \newcounter{chrnumtwo}
+    \newcount \strlen
+    \newcount \halfstrlen
+    \newcommand{\ccmessagefontsize}{14}%fontsize for message letters
+    \newcommand{\ccmessagenumfontsize}{12}%fontsize for message letters
+    \newcommand{\ccmessagebreak}{18pt}%space between lines in the message
+    \newcommand{\cctablefontsize}{14}%fontsize for cipher table letters
+    \newcommand{\nfs}{\fontsize{9}{9}\selectfont}%fontsize for cipher table numbers
+    \newcommand{\lfs}{\fontsize{10}{10}\selectfont}%fontsize for cipher table numbers
+    \ifthenelse{\boolean{numbers}}{\strlen=99}{\strlen=40}
+    \halfstrlen = 19
+    \newcommand{\topmessageskip}{\vskip 34pt}
+    \newcommand{\oneone}{abcdef ghijk lmnop qrstu vwxyz abc}
+    \newcommand{\onetwo}{00 01 02 03 04 05 \ \ \ 06 07 08 09 10 \ \ \ 11 12 13 14 15 \ \ \ 16 17 18 19 20 \ \ \ 21 22 23 24 25 00 01 02}
+    \newcommand{\twoone}{ }
+    \newcommand{\twotwo}{DLUGJZ VJJG QJY REHIAFEV LUDL. - WLE}
+     \newcommand{\threeone}{ }
+    \newcommand{\threetwo}{QYREPUFE}
+     \newcommand{\fourone}{ }
+    \newcommand{\fourtwo}{ }
+    \newcommand{\fiveone}{ }
+    \newcommand{\fivetwo}{ }
+    \newcommand{\sixone}{ }
+    \newcommand{\sixtwo}{ }
+    \newcommand{\sevenone}{ }
+    \newcommand{\seventwo}{12345678901234567890123456789012345678901234567890}
+    \newcommand{\stripskip}{-1pt}
+     \renewcommand{\arraystretch}{1.2}
+    \newcommand{\redcell}[1]{\textcolor{red}{\hbox to 15pt{#1\hfil}}} 
+    \newcommand{\redcellnum}[1]{\fontsize{12}{12}\textcolor{red}{\hbox to 1.5em{#1\hfil}}} 
+    \newcommand{\cell}[1]{\hbox to 15pt{#1\hfil}}
+     \newcommand{\tcell}[1]{\nfs{\hbox to 5pt{#1\hfil}}}
+
+\begin{document}
+%top banner in three horizontal boxes
+
+\begin{minipage}[b][.75in][t]{3in}{\includegraphics[scale = 2]{logo_small}}\end{minipage}%
+\begin{minipage}[b][.75in][c]{5in}{\vskip10pt\fontsize{24}{26}\selectfont{Crack Substitution}}\end{minipage}%
+\begin{minipage}[b][.75in][c]{2in}{{\bf{\messagename}}\\\cipher{ Cipher}}\end{minipage}%
+\hrule
+
+%\fbox{
+\begin{minipage}[b][6.55in][t]{8.5in}
+%    \fbox{
+    \begin{minipage}[b][1.25in][c]{8.3in}
+    {\hfil
+    \renewcommand{\arraystretch}{1.2}%sets stretch in height of row
+    \fontsize{\cctablefontsize}{\cctablefontsize}\selectfont\texttt{%
+    \begin{tabular}{|*{26}{c|}}
+    \hline%
+    a&b&c&d&e&f&g&h&i&j&k&l&m&n&o&p&q&r&s&t&u&v&w&x&y&z\\
+    \hline%
+    \nfs{ 0}&\nfs{1}&\nfs{2}&\nfs{3}&\nfs{4}&\nfs{5}&\nfs{6}&\nfs{7}&\nfs{8}&\nfs{9}&\nfs{10}&\nfs{11}&\nfs{12}&\nfs{13}&\nfs{14}&\nfs{15}&\nfs{16}&\nfs{17}&\nfs{18}&\nfs{19}&\nfs{20}&\nfs{21}&\nfs{22}&\nfs{23}&\nfs{24}&\nfs{25}\\%
+    \hline
+    &&&&&&&&&&&&&&&&&&&&&&&&&\\
+    \hline
+    &&&&&&&&&&&&&&&&&&&&&&&&&\\
+    \hline
+    \end{tabular}%
+    \hfil}}\end{minipage}
+%    }		
+%    \fbox{
+   \ifthenelse{\boolean{numbers}}{ \begin{minipage}[b][4in][t]{8.3in}%
+    {\topmessageskip%
+    \fontsize{\ccmessagenumfontsize}{\ccmessagenumfontsize}\selectfont\texttt{%
+    \setcounter{chrnum}{1}\setcounter{chrnumtwo}{2}%
+    \loop\redcellnum{\StrChar{\oneone}{\thechrnum}}\ifnum\thechrnum<\strlen\addtocounter{chrnum}{1}\repeat\\%
+    \setcounter{chrnum}{1}\setcounter{chrnumtwo}{2}%%
+    \loop\StrMid{\onetwo}{\thechrnum}{\thechrnumtwo}\ \ifnum\thechrnum<\strlen\addtocounter{chrnum}{3}\addtocounter{chrnumtwo}{3}\repeat\\[\ccmessagebreak]%
+    \setcounter{chrnum}{1}%
+    \loop\redcellnum{\StrChar{\twoone}{\thechrnum}}\ifnum\thechrnum<\strlen\stepcounter{chrnum}\repeat\\%
+    \setcounter{chrnum}{1}\setcounter{chrnumtwo}{2}%%
+    \loop\StrMid{\twotwo}{\thechrnum}{\thechrnumtwo}\ \ifnum\thechrnum<\strlen\addtocounter{chrnum}{3}\addtocounter{chrnumtwo}{3}\repeat\\[\ccmessagebreak]%
+    \setcounter{chrnum}{1}%
+    \loop\redcellnum{\StrChar{\threeone}{\thechrnum}}\ifnum\thechrnum<\strlen\stepcounter{chrnum}\repeat\\%
+    \setcounter{chrnum}{1}\setcounter{chrnumtwo}{2}%%
+    \loop\StrMid{\threetwo}{\thechrnum}{\thechrnumtwo}\ \ifnum\thechrnum<\strlen\addtocounter{chrnum}{3}\addtocounter{chrnumtwo}{3}\repeat\\[\ccmessagebreak]%
+    \setcounter{chrnum}{1}%
+    \loop\redcellnum{\StrChar{\fourone}{\thechrnum}}\ifnum\thechrnum<\strlen\stepcounter{chrnum}\repeat\\%
+    \setcounter{chrnum}{1}\setcounter{chrnumtwo}{2}%%
+    \loop\StrMid{\fourtwo}{\thechrnum}{\thechrnumtwo}\ \ifnum\thechrnum<\strlen\addtocounter{chrnum}{3}\addtocounter{chrnumtwo}{3}\repeat\\[\ccmessagebreak]%
+    \setcounter{chrnum}{1}%
+    \loop\redcellnum{\StrChar{\fiveone}{\thechrnum}}\ifnum\thechrnum<\strlen\stepcounter{chrnum}\repeat\\%
+    \setcounter{chrnum}{1}\setcounter{chrnumtwo}{2}%%
+    \loop\StrMid{\fivetwo}{\thechrnum}{\thechrnumtwo}\ \ifnum\thechrnum<\strlen\addtocounter{chrnum}{3}\addtocounter{chrnumtwo}{3}\repeat\\[\ccmessagebreak]%
+    \loop\redcellnum{\StrChar{\sevenone}{\thechrnum}}\ifnum\thechrnum<\strlen\stepcounter{chrnum}\repeat\\%
+    \setcounter{chrnum}{1}\setcounter{chrnumtwo}{2}%
+    \loop\StrMid{\seventwo}{\thechrnum}{\thechrnumtwo}\ \ifnum\thechrnum<\strlen\addtocounter{chrnum}{3}\addtocounter{chrnumtwo}{3}\repeat}%
+    }\end{minipage}}
+    {
+    { \begin{minipage}[b][4in][t]{8.3in}%
+    {\topmessageskip%
+    \fontsize{\ccmessagefontsize}{\ccmessagefontsize}\selectfont\texttt{%
+    \setcounter{chrnum}{1}%
+    \loop\redcell{\StrChar{\oneone}{\thechrnum}}\ifnum\thechrnum<\strlen\stepcounter{chrnum}\repeat\\%
+    \setcounter{chrnum}{1}%
+    \loop\cell{\StrChar{\onetwo}{\thechrnum}}\ifnum\thechrnum<\strlen\stepcounter{chrnum}\repeat\\[\ccmessagebreak]%
+    \setcounter{chrnum}{1}%
+    \loop\redcell{\StrChar{\twoone}{\thechrnum}}\ifnum\thechrnum<\strlen\stepcounter{chrnum}\repeat\\%
+    \setcounter{chrnum}{1}%
+    \loop\cell{\StrChar{\twotwo}{\thechrnum}}\ifnum\thechrnum<\strlen\stepcounter{chrnum}\repeat\\[\ccmessagebreak]%
+    \setcounter{chrnum}{1}%
+    \loop\redcell{\StrChar{\threeone}{\thechrnum}}\ifnum\thechrnum<\strlen\stepcounter{chrnum}\repeat\\%
+    \setcounter{chrnum}{1}%
+    \loop\cell{\StrChar{\threetwo}{\thechrnum}}\ifnum\thechrnum<\strlen\stepcounter{chrnum}\repeat\\[\ccmessagebreak]%
+    \setcounter{chrnum}{1}%
+    \loop\redcell{\StrChar{\fourone}{\thechrnum}}\ifnum\thechrnum<\strlen\stepcounter{chrnum}\repeat\\%
+    \setcounter{chrnum}{1}%
+    \loop\cell{\StrChar{\fourtwo}{\thechrnum}}\ifnum\thechrnum<\strlen\stepcounter{chrnum}\repeat\\[\ccmessagebreak]%
+    \setcounter{chrnum}{1}%
+    \loop\redcell{\StrChar{\fiveone}{\thechrnum}}\ifnum\thechrnum<\strlen\stepcounter{chrnum}\repeat\\%
+    \setcounter{chrnum}{1}%
+   \loop\cell{\StrChar{\fivetwo}{\thechrnum}}\ifnum\thechrnum<\strlen\stepcounter{chrnum}\repeat\\[\ccmessagebreak]%
+    \setcounter{chrnum}{1}%
+%    \loop\redcell{\StrChar{\sixone}{\thechrnum}}\ifnum\thechrnum<\strlen\stepcounter{chrnum}\repeat\\%
+%    \setcounter{chrnum}{1}%
+%   \loop\cell{\StrChar{\sixtwo}{\thechrnum}}\ifnum\thechrnum<\strlen\stepcounter{chrnum}\repeat\\[\ccmessagebreak]%
+%    \setcounter{chrnum}{1}%
+    \loop\redcell{\StrChar{\sevenone}{\thechrnum}}\ifnum\thechrnum<\strlen\stepcounter{chrnum}\repeat\\%
+    \setcounter{chrnum}{1}%
+    \loop\cell{\StrChar{\seventwo}{\thechrnum}}\ifnum\thechrnum<\strlen\stepcounter{chrnum}\repeat}%
+    }\end{minipage}}
+    }
+%    }
+    \fbox{
+\hfil    \begin{minipage}[b][1in][t]{8.3in}%
+    {\fontsize{11}{11}\selectfont\bf{To Crack a Substitution Cipher:}}\\[10pt]
+    {\fontsize{11}{11}\selectfont{Enter substitutions in the table and above the message.\\ Use letter frequencies to help. Use patterns in English  or patterns in the cipher table to help.\\ Make changes until your message makes sense.}}%
+    \end{minipage}%
+    }
+\end{minipage}
+%}%
+%\fbox{
+\begin{minipage}[b][6.55in][t]{1.7in}
+\renewcommand{\arraystretch}{1.5}%sets stretch in height of row
+\setlength\tabcolsep{1pt}%increases space between columns
+\hfil\lfs{Letter Frequencies}\hfil
+{\center{\begin{tabular}{| c | c | c | c |}
+	\hline
+	 \lfs{In message}&\lfs{In English}\\
+	 \hline
+	\lfs J - \nfs{10.1}&  \lfs e -\nfs{12.7}\\
+	&  \lfs t -\  \nfs{9.1}\\
+	&  \lfs a - \nfs{8.2}\\
+	&  \lfs o - \nfs{7.5}\\
+	&  \lfs i - \nfs{7.0}\\
+	&  \lfs n - \nfs{6.8}\\
+	&  \lfs s - \nfs{6.3}\\
+	&  \lfs h - \nfs{6.1}\\
+	&  \lfs r - \nfs{6.0}\\
+	&  \lfs d - \nfs{4.3}\\
+	&  \lfs l - \nfs{4.0}\\
+	&  \lfs u - \nfs{2.8}\\
+	&  \lfs c - \nfs{2.8}\\
+	&  \lfs w - \nfs{2.4}\\
+	&  \lfs m - \nfs{2.4}\\
+	&  \lfs f - \nfs{2.2}\\
+	&  \lfs y - \nfs{2.0}\\
+	&  \lfs g - \nfs{2.0}\\
+	&  \lfs p - \nfs{1.9}\\
+	&  \lfs b - \nfs{1.5}\\
+	&  \lfs v - \nfs{1.0}\\
+	&  \lfs k - \nfs{0.8}\\
+	&  \lfs x - \nfs{0.2}\\
+	&  \lfs j - \nfs{0.2}\\
+	&  \lfs z - \nfs{0.1}\\
+	&  \lfs q - \nfs{0.1}\\
+	\hline
+	 \end{tabular}}\\
+}
+\end{minipage}
+%}
+\newpage
+
+%%write something
+%\setcounter{chrnum}{1}
+%% {\cell{\StrChar{\oneone}{\thechrnum}}} 
+%%\stepcounter{chrnum}
+%% {\cell{\StrChar{\oneone}{\thechrnum}}}
+%% \ifnum\thechrnum=1 {True}\else{False}\fi
+%	  \loop  \fontsize{\ccmessagefontsize}{\ccmessagefontsize}\StrChar{oneone}{\thechrnum}\& \ifnum \thechrnum<28  \stepcounter{chrnum} \repeat 
+% 
+
+ \end{document} 
+%  {\footnotesize{\it{This is the footer}}}
+% For many users, the previous commands will be enough.
+% If you want to directly input Unicode, add an Input Menu or Keyboard to the menu bar 
+% using the International Panel in System Preferences.
+% Unicode must be typeset using a font containing the appropriate characters.
+% Remove the comment signs below for examples.
+
+% \newfontfamily{\A}{Geeza Pro}
+% \newfontfamily{\H}[Scale=0.9]{Lucida Grande}
+% \newfontfamily{\J}[Scale=0.85]{Osaka}
+
+% Here are some multilingual Unicode fonts: this is Arabic text: {\A السلام عليكم}, this is Hebrew: {\H שלום}, 
+% and here's some Japanese: {\J 今日は}.
+
