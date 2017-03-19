@@ -1,6 +1,6 @@
 # README #
 
-Probably you should talk to me about it.
+This is a collection of latex files using xelatex. They are to make worksheets from data generated at cryptoclub.org. Probably you should talk to me about it.
 
 ### What is this repository for? ###
 
@@ -10,6 +10,7 @@ Probably you should talk to me about it.
 ### How do I get set up? ###
 
 * Nothing complicated. Just some latex files.
+* You may have to fuss about fonts.
 
 ### Contribution guidelines ###
 
