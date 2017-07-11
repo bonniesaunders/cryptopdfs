@@ -1,0 +1,284 @@
+% XeLaTeX can use any Mac OS X font. See the setromanfont command below.
+% Input to XeLaTeX is full Unicode, so Unicode characters can be typed directly into the source.
+% The next lines tell TeXShop to typeset with xelatex, and to open and save the source with Unicode encoding.
+%!TEX TS-program = xelatex
+%!TEX encoding = UTF-8 Unicode
+
+\documentclass[12pt]{article}
+\usepackage[landscape, margin=.4in]{geometry}              % See geometry.pdf to learn the layout options. There are lots.
+\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}
+\usepackage{ifthen}
+\usepackage{titlesec}
+\usepackage{xcolor}
+\usepackage{array}
+\usepackage{xstring}
+
+% Will Robertson's fontspec.sty can be used to simplify font choices.
+% To experiment, open /Applications/Font Book to examine the fonts provided on Mac OS X,
+% and change "Hoefler Text" to any of these choices.
+\usepackage{fontspec,xltxtra,xunicode}
+\defaultfontfeatures{Mapping=tex-text}
+\setromanfont[Mapping=tex-text]{Nanum Myeongjo}
+\setsansfont[Scale=MatchLowercase,Mapping=tex-text]{Euphemia UCAS}
+\setmonofont[Scale=MatchLowercase]{SimHei}
+
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+
+\newcommand{\messagename}{Message Name}
+\newcommand{\cipher}{Caesar }
+\newcommand{\key}{3}
+%numtable is true if you want numbers in the ciphertable
+\newboolean{numtable}
+\setboolean{numtable}{false}
+%numpages is the number of pages needed for the message
+\newcount\numpages
+\numpages=2
+\newcommand{\ccmessagefontsize}{14}%fontsize for message letters
+\newcommand{\ccmessagebreak}{18pt}%space between lines in the message
+\newcommand{\ccmessagenumfontsize}{12}%fontsize for message letters
+\newcommand{\cctablefontsize}{14}%fontsize for cipher table letters
+\newcommand{\nfs}{\fontsize{9}{9}\selectfont}%fontsize for cipher table numbers
+\newcommand{\lfs}{\fontsize{10}{10}\selectfont\texttt}%fontsize for cipher table numbers
+\newcommand{\topmessageskip}{\vskip 28pt}
+\newcounter{chrnum}
+\newcounter{chrnumtwo}
+%strlen is the number of characters that prints in one line of the message
+\newcount \strlen 
+\strlen=40
+\newcommand{\oneone}{abcde fghij klmno pqrst uvwxy z}
+\newcommand{\onetwo}{00 01 02 03 04 \ \ \ 05 06 07 08 09 \ \ \ 10 11 12 13 14 \ \ \ 15 16 17 18 19 \ \ \  20 21 22 23 24 \ \ \ 25}
+\newcommand{\twoone}{abcde fghij klmno pqrst uvwxy z}
+\newcommand{\twotwo}{00 01 02 03 04 \ \ \ 05 06 07 08 09 \ \ \ 10 11 12 13 14 \ \ \ 15 16 17 18 19 \ \ \  20 21 22 23 24 \ \ \ 25}
+\newcommand{\threeone}{ } 
+\newcommand{\threetwo}{JFDVNYVIV ZE SVUWFIU TFLEKP, MZIXZEZR.}
+\newcommand{\fourone}{ }
+\newcommand{\fourtwo}{YV CVWK VETIPGKVU DVJJRXVJ KYRK IVMVRC KYV }
+\newcommand{\fiveone}{ }
+\newcommand{\fivetwo}{CFTRKZFE. KYVP YRMV EVMVI SVVE TIRTBVU. XF }
+\newcommand{\sixone}{ }
+\newcommand{\sixtwo}{KF KYV TFDZTJ JVTKZFE FW TIPGKFTCLS.FIX KF}
+\newcommand{\sevenone}{ }
+\newcommand{\seventwo}{IVRU KYV NYFCV JKFIP.}
+\newcommand{\eightone}{ }
+\newcommand{\eighttwo}{KNF YLEUIVU PVRIJ RXF, KYFDRJ A. SVRCV }
+\newcommand{\nineone}{ }
+\newcommand{\ninetwo}{SLIZVU R KIVRJLIV FW XFCU REU JZCMVI }
+\newcommand{\tenone}{ } 
+\newcommand{\tentwo}{JFDVNYVIV ZE SVUWFIU TFLEKP, MZIXZEZR.}
+\newcommand{\elevenone}{ }
+\newcommand{\eleventwo}{YV CVWK VETIPGKVU DVJJRXVJ KYRK IVMVRC KYV }
+\newcommand{\twelveone}{ }
+\newcommand{\twelvetwo}{CFTRKZFE. KYVP YRMV EVMVI SVVE TIRTBVU. XF }
+\newcommand{\thirteenone}{ }
+\newcommand{\thirteentwo}{KF KYV TFDZTJ JVTKZFE FW TIPGKFTCLS.FIX KF}
+\newcommand{\fourteenone}{ }
+\newcommand{\fourteentwo}{IVRU KYV NYFCV JKFIP.}
+%
+\newcommand{\stripskip}{-1pt}
+\renewcommand{\arraystretch}{1.2}
+\newcommand{\redcell}[1]{\textcolor{red}{\hbox to 15pt{#1\hfil}}} 
+\newcommand{\redcellnum}[1]{\fontsize{12}{12}\textcolor{red}{\hbox to 1.5em{#1\hfil}}} 
+\newcommand{\cell}[1]{\hbox to 15pt{#1\hfil}}
+\newcommand{\tcell}[1]{\nfs{\hbox to 5pt{#1\hfil}}}
+
+\begin{document}
+%top banner in three horizontal boxes
+\begin{minipage}[b][.75in][t]{3in}{\includegraphics[scale = 2]{logo_small}}\end{minipage}%
+\begin{minipage}[b][.75in][c]{5in}{\vskip10pt\fontsize{24}{26}\selectfont{Crack Substitution}}\end{minipage}%
+\begin{minipage}[b][.75in][c]{2in}{{\bf{\messagename}}\\\cipher{ Cipher}}\end{minipage}%
+\hrule
+
+%Left side of page has three boxes: ciphertable, message, instructions
+%\fbox{
+\begin{minipage}[b][6.55in][t]{8.5in}
+%%ciphertable: has two rows for letters and four for numtable
+%    \fbox{
+    \begin{minipage}[b][1.25in][c]{8.3in}
+    {
+    \renewcommand{\arraystretch}{1.5}%sets stretch in height of row
+    \ifthenelse{\boolean{numtable}}{\setlength\tabcolsep{5.5pt}}{}%increases space between columns
+    \fontsize{\cctablefontsize}{\cctablefontsize}\selectfont\texttt{%
+    \begin{tabular}{r |*{26}{c|}}
+    \cline{2 - 27}%
+    {\fontsize{10}{10}\selectfont{plaintext}}
+&a&b&c&d&e&f&g&h&i&j&k&l&m&n&o&p&q&r&s&t&u&v&w&x&y&z\\
+    \cline{2 - 27}% 
+\ifthenelse{\boolean{numtable}}{
+{\fontsize{10}{10}\selectfont{numbers}}&\nfs{ 0}&\nfs{1}&\nfs{2}&\nfs{3}&\nfs{4}&\nfs{5}&\nfs{6}&\nfs{7}&\nfs{8}&\nfs{9}&\nfs{10}&\nfs{11}&\nfs{12}&\nfs{13}&\nfs{14}&\nfs{15}&\nfs{16}&\nfs{17}&\nfs{18}&\nfs{19}&\nfs{20}&\nfs{21}&\nfs{22}&\nfs{23}&\nfs{24}&\nfs{25}\\%
+\cline{2 - 27}%
+{\fontsize{10}{10}\selectfont{CIPHERNUMBERS}}&&&&&&&&&&&&&&&&&&&&&&&&&&\\
+\cline{2 - 27}%
+}{}
+{\fontsize{10}{10}\selectfont{CIPHERTEXT}}&&&&&&&&&&&&&&&&&&&&&&&&&&\\
+ \cline{2 - 27}
+    \end{tabular}%
+    }}\end{minipage}
+%    }		
+{
+\begin{minipage}[b][4.8in][t]{8.3in}%
+{\topmessageskip%
+\fontsize{\ccmessagefontsize}{\ccmessagefontsize}\selectfont\texttt{%
+\setcounter{chrnum}{1}%
+\loop\redcell{\StrChar{\oneone}{\thechrnum}}\ifnum\thechrnum<\strlen\stepcounter{chrnum}\repeat\\%
+\setcounter{chrnum}{1}%
+\loop\cell{\StrChar{\onetwo}{\thechrnum}}\ifnum\thechrnum<\strlen\stepcounter{chrnum}\repeat\\[\ccmessagebreak]%
+\setcounter{chrnum}{1}%
+\loop\redcell{\StrChar{\twoone}{\thechrnum}}\ifnum\thechrnum<\strlen\stepcounter{chrnum}\repeat\\%
+\setcounter{chrnum}{1}%
+\loop\cell{\StrChar{\twotwo}{\thechrnum}}\ifnum\thechrnum<\strlen\stepcounter{chrnum}\repeat\\[\ccmessagebreak]%
+\setcounter{chrnum}{1}%
+\loop\redcell{\StrChar{\threeone}{\thechrnum}}\ifnum\thechrnum<\strlen\stepcounter{chrnum}\repeat\\%
+\setcounter{chrnum}{1}%
+\loop\cell{\StrChar{\threetwo}{\thechrnum}}\ifnum\thechrnum<\strlen\stepcounter{chrnum}\repeat\\[\ccmessagebreak]%
+\setcounter{chrnum}{1}%
+\loop\redcell{\StrChar{\fourone}{\thechrnum}}\ifnum\thechrnum<\strlen\stepcounter{chrnum}\repeat\\%
+\setcounter{chrnum}{1}%
+\loop\cell{\StrChar{\fourtwo}{\thechrnum}}\ifnum\thechrnum<\strlen\stepcounter{chrnum}\repeat\\[\ccmessagebreak]%
+\setcounter{chrnum}{1}%
+\loop\redcell{\StrChar{\fiveone}{\thechrnum}}\ifnum\thechrnum<\strlen\stepcounter{chrnum}\repeat\\%
+\setcounter{chrnum}{1}%
+\loop\cell{\StrChar{\fivetwo}{\thechrnum}}\ifnum\thechrnum<\strlen\stepcounter{chrnum}\repeat\\[\ccmessagebreak]%
+\setcounter{chrnum}{1}%
+\loop\redcell{\StrChar{\sixone}{\thechrnum}}\ifnum\thechrnum<\strlen\stepcounter{chrnum}\repeat\\%
+\setcounter{chrnum}{1}%
+\loop\cell{\StrChar{\sixtwo}{\thechrnum}}\ifnum\thechrnum<\strlen\stepcounter{chrnum}\repeat\\[\ccmessagebreak]%
+\setcounter{chrnum}{1}%
+\loop\redcell{\StrChar{\sevenone}{\thechrnum}}\ifnum\thechrnum<\strlen\stepcounter{chrnum}\repeat\\%
+\setcounter{chrnum}{1}%
+\loop\cell{\StrChar{\seventwo}{\thechrnum}}\ifnum\thechrnum<\strlen\stepcounter{chrnum}\repeat}%
+}\end{minipage}
+%    }
+}
+%Instruction box
+\fbox{%
+\begin{minipage}[b][.6in][t]{8.3in}%
+{\fontsize{11}{11}\selectfont\bf{To Crack a Substitution Cipher:}}%
+{\fontsize{11}{11}\selectfont{ Enter substitutions in the table and above the message.%
+\\Use letter frequencies to help. Use patterns in English  or patterns in the cipher table to help.% 
+\\Make changes until your message makes sense.}}%
+\end{minipage}%
+}
+\end{minipage}
+%}%
+%\fbox{
+\begin{minipage}[b][6.55in][t]{1.7in}
+\renewcommand{\arraystretch}{1.5}%sets stretch in height of row
+\setlength\tabcolsep{1pt}%increases space between columns
+\vskip 20pt
+\hfil\lfs{Letter Frequencies}\hfil
+{\center{\begin{tabular}{| c | c | c | c |}
+	\hline
+    	\lfs{In message}&\lfs{In English}\\
+    	\hline
+    	\lfs V -\nfs{15.4}&  \lfs e -\nfs{12.7}\\
+    	\lfs F - \nfs{9.3}&  \lfs t -\  \nfs{9.1}\\
+    	\lfs K - \nfs{8.4}&  \lfs a - \nfs{8.2}\\
+    	\lfs I - \nfs{7.9}&  \lfs o - \nfs{7.5}\\
+    	\lfs R - \nfs{7.0}&  \lfs i - \nfs{7.0}\\
+    	\lfs J - \nfs{5.1}&  \lfs n - \nfs{6.8}\\
+    	\lfs Y - \nfs{5.1}&  \lfs s - \nfs{6.3}\\
+    	\lfs E - \nfs{4.7}&  \lfs h - \nfs{6.1}\\
+    	\lfs T - \nfs{4.7}&  \lfs r - \nfs{6.0}\\
+    	\lfs U - \nfs{4.7}&  \lfs d - \nfs{4.3}\\
+    	\lfs Z - \nfs{4.2}&  \lfs l - \nfs{4.0}\\
+    	\lfs C - \nfs{3.7}&  \lfs u - \nfs{2.8}\\
+    	\lfs P - \nfs{2.8}&  \lfs c - \nfs{2.8}\\
+    	\lfs X - \nfs{2.8}&  \lfs w - \nfs{2.4}\\
+    	\lfs L - \nfs{2.3}&  \lfs m - \nfs{2.4}\\
+    	\lfs M - \nfs{2.3}&  \lfs f - \nfs{2.2}\\
+    	\lfs S - \nfs{2.3}&  \lfs y - \nfs{2.0}\\
+    	\lfs D - \nfs{1.9}&  \lfs g - \nfs{2.0}\\
+    	\lfs W - \nfs{1.9}&  \lfs p - \nfs{1.9}\\
+    	\lfs N - \nfs{1.4}&  \lfs b - \nfs{1.5}\\
+    	\lfs G - \nfs{0.9}&  \lfs v - \nfs{1.0}\\
+    	\lfs A - \nfs{0.5}&  \lfs k - \nfs{0.8}\\
+    	\lfs B - \nfs{0.0}&  \lfs x - \nfs{0.2}\\
+    	\lfs H - \nfs{0.0}&  \lfs j - \nfs{0.2}\\
+    	\lfs O - \nfs{0.0}&  \lfs z - \nfs{0.1}\\
+    	\lfs Q - \nfs{0.0}&  \lfs q - \nfs{0.1}\\
+    	\hline
+\end{tabular}}\\
+}
+\end{minipage}
+%}
+\ifnum\numpages=1{\end{document}}\else{\newpage
+\renewcommand{\oneone}{abcde fghij klmno pqrst uvwxy z}
+\renewcommand{\onetwo}{00 01 02 03 04 \ \ \ 05 06 07 08 09 \ \ \ 10 11 12 13 14 \ \ \ 15 16 17 18 19 \ \ \  20 21 22 23 24 \ \ \ 25}
+\renewcommand{\twoone}{abcde fghij klmno pqrst uvwxy z}
+\renewcommand{\twotwo}{00 01 02 03 04 \ \ \ 05 06 07 08 09 \ \ \ 10 11 12 13 14 \ \ \ 15 16 17 18 19 \ \ \  20 21 22 23 24 \ \ \ 25}
+\renewcommand{\threeone}{ } 
+\renewcommand{\threetwo}{JFDVNYVIV ZE SVUWFIU TFLEKP, MZIXZEZR.}
+\renewcommand{\fourone}{ }
+\renewcommand{\fourtwo}{YV CVWK VETIPGKVU DVJJRXVJ KYRK IVMVRC KYV }
+\renewcommand{\fiveone}{ }
+\renewcommand{\fivetwo}{CFTRKZFE. KYVP YRMV EVMVI SVVE TIRTBVU. XF }
+\renewcommand{\sixone}{ }
+\renewcommand{\sixtwo}{KF KYV TFDZTJ JVTKZFE FW TIPGKFTCLS.FIX KF}
+\renewcommand{\sevenone}{ }
+\renewcommand{\seventwo}{IVRU KYV NYFCV JKFIP.}
+\renewcommand{\eightone}{ }
+\renewcommand{\eighttwo}{KNF YLEUIVU PVRIJ RXF, KYFDRJ A. SVRCV }
+\renewcommand{\nineone}{ }
+\renewcommand{\ninetwo}{SLIZVU R KIVRJLIV FW XFCU REU JZCMVI }
+\renewcommand{\tenone}{ } 
+\renewcommand{\tentwo}{JFDVNYVIV ZE SVUWFIU TFLEKP, MZIXZEZR.}
+\renewcommand{\elevenone}{ }
+\renewcommand{\eleventwo}{YV CVWK VETIPGKVU DVJJRXVJ KYRK IVMVRC KYV }
+\renewcommand{\twelveone}{ }
+\renewcommand{\twelvetwo}{CFTRKZFE. KYVP YRMV EVMVI SVVE TIRTBVU. XF }
+\renewcommand{\thirteenone}{ }
+\renewcommand{\thirteentwo}{KF KYV TFDZTJ JVTKZFE FW TIPGKFTCLS.FIX KF}
+\renewcommand{\fourteenone}{ }
+\renewcommand{\fourteentwo}{IVRU KYV NYFCV JKFIP.}
+\{
+\begin{minipage}[b][4.8in][t]{8.3in}%
+{\topmessageskip%
+\fontsize{\ccmessagefontsize}{\ccmessagefontsize}\selectfont\texttt{%
+\setcounter{chrnum}{1}%
+\loop\redcell{\StrChar{\oneone}{\thechrnum}}\ifnum\thechrnum<\strlen\stepcounter{chrnum}\repeat\\%
+\setcounter{chrnum}{1}%
+\loop\cell{\StrChar{\onetwo}{\thechrnum}}\ifnum\thechrnum<\strlen\stepcounter{chrnum}\repeat\\[\ccmessagebreak]%
+\setcounter{chrnum}{1}%
+\loop\redcell{\StrChar{\twoone}{\thechrnum}}\ifnum\thechrnum<\strlen\stepcounter{chrnum}\repeat\\%
+\setcounter{chrnum}{1}%
+\loop\cell{\StrChar{\twotwo}{\thechrnum}}\ifnum\thechrnum<\strlen\stepcounter{chrnum}\repeat\\[\ccmessagebreak]%
+\setcounter{chrnum}{1}%
+\loop\redcell{\StrChar{\threeone}{\thechrnum}}\ifnum\thechrnum<\strlen\stepcounter{chrnum}\repeat\\%
+\setcounter{chrnum}{1}%
+\loop\cell{\StrChar{\threetwo}{\thechrnum}}\ifnum\thechrnum<\strlen\stepcounter{chrnum}\repeat\\[\ccmessagebreak]%
+\setcounter{chrnum}{1}%
+\loop\redcell{\StrChar{\fourone}{\thechrnum}}\ifnum\thechrnum<\strlen\stepcounter{chrnum}\repeat\\%
+\setcounter{chrnum}{1}%
+\loop\cell{\StrChar{\fourtwo}{\thechrnum}}\ifnum\thechrnum<\strlen\stepcounter{chrnum}\repeat\\[\ccmessagebreak]%
+\setcounter{chrnum}{1}%
+\loop\redcell{\StrChar{\fiveone}{\thechrnum}}\ifnum\thechrnum<\strlen\stepcounter{chrnum}\repeat\\%
+\setcounter{chrnum}{1}%
+\loop\cell{\StrChar{\fivetwo}{\thechrnum}}\ifnum\thechrnum<\strlen\stepcounter{chrnum}\repeat\\[\ccmessagebreak]%
+\setcounter{chrnum}{1}%
+\loop\redcell{\StrChar{\sixone}{\thechrnum}}\ifnum\thechrnum<\strlen\stepcounter{chrnum}\repeat\\%
+\setcounter{chrnum}{1}%
+\loop\cell{\StrChar{\sixtwo}{\thechrnum}}\ifnum\thechrnum<\strlen\stepcounter{chrnum}\repeat\\[\ccmessagebreak]%
+\setcounter{chrnum}{1}%
+\loop\redcell{\StrChar{\sevenone}{\thechrnum}}\ifnum\thechrnum<\strlen\stepcounter{chrnum}\repeat\\%
+\setcounter{chrnum}{1}%
+\loop\cell{\StrChar{\seventwo}{\thechrnum}}\ifnum\thechrnum<\strlen\stepcounter{chrnum}\repeat}%
+}\end{minipage}
+%    }
+}
+\end{document}
+%  {\footnotesize{\it{This is the footer}}}
+% For many users, the previous commands will be enough.
+% If you want to directly input Unicode, add an Input Menu or Keyboard to the menu bar 
+% using the International Panel in System Preferences.
+% Unicode must be typeset using a font containing the appropriate characters.
+% Remove the comment signs below for examples.
+
+% \newfontfamily{\A}{Geeza Pro}
+% \newfontfamily{\H}[Scale=0.9]{Lucida Grande}
+% \newfontfamily{\J}[Scale=0.85]{Osaka}
+
+% Here are some multilingual Unicode fonts: this is Arabic text: {\A السلام عليكم}, this is Hebrew: {\H שלום}, 
+% and here's some Japanese: {\J 今日は}.
+
