@@ -1,0 +1,113 @@
+% XeLaTeX can use any Mac OS X font. See the setromanfont command below.
+% Input to XeLaTeX is full Unicode, so Unicode characters can be typed directly into the source.
+% The next lines tell TeXShop to typeset with xelatex, and to open and save the source with Unicode encoding.
+%!TEX TS-program = xelatex
+%!TEX encoding = UTF-8 Unicode
+
+\documentclass[17pt]{extarticle}
+\usepackage[margin=.4in]{geometry}                
+% See geometry.pdf to learn the layout options. There are lots.
+%\geometry{letterpaper}                   % ... or a4paper or a5paper or ... 
+%\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}
+%\usepackage{amssymb}
+\usepackage{ifthen}
+%\usepackage{array}
+\usepackage{dashrule}
+\usepackage{xstring}
+
+% Will Robertson's fontspec.sty can be used to simplify font choices.
+% To experiment, open /Applications/Font Book to examine the fonts provided on Mac OS X,
+% and change "Hoefler Text" to any of these choices.
+\usepackage{fontspec,xltxtra,xunicode}
+\defaultfontfeatures{Mapping=tex-text}
+\setromanfont[Mapping=tex-text]{Hoefler Text}
+\setsansfont[Scale=MatchLowercase,Mapping=tex-text]{Gill Sans}
+\setmonofont[Scale=MatchLowercase]{SimHei}
+
+
+\begin{document}
+    \newcommand{\cipher}{Vigenere}
+    \newcommand{\key}{KEYWORD}
+    \newboolean{numbers}
+    \setboolean{numbers}{false}
+    \newcommand{\oneone}{KEYWORDKEY WOR DORD}
+    \newcommand{\onetwo}{ }
+    \newcommand{\onethree}{ABCDEFGHIJ KLM NOPQ}
+    \newcommand{\twoone}{everything you want}
+    \newcommand{\twotwo}{ }
+    \newcommand{\twothree}{18231805040125101314 \ 042412 \ 08001301}
+    \newcommand{\threeone}{think of the things}
+    \newcommand{\threetwo}{ }
+    \newcommand{\threethree}{0125101306 \ 2403 \ 012518 \ 012510131416}
+    \newcommand{\fourone}{you don't get that}
+    \newcommand{\fourtwo}{ }
+    \newcommand{\fourthree}{042412 \ 072413'\ 01 \ 141801 \ 01250001}
+    \newcommand{\fiveone}{you don't want.}
+    \newcommand{\fivetwo}{ }
+    \newcommand{\fivethree}{042412 \ 072413'\ 01 \ 08001301.}
+    \newcommand{\sixone}{oscar wilde}
+    \newcommand{\sixtwo}{ }
+    \newcommand{\sixthree}{2416220005 \ 0810170718}
+
+    \newcommand{\stripskip}{-24pt}
+    \renewcommand{\arraystretch}{.8}
+    \newcommand{\cell}[1]{\hbox to 0.8cm{\hfil \raisebox{-3pt}{#1}\hfil} }
+
+\newcommand{\makerow}[1]{\cell{\StrChar{#1}{1}}&\cell{\StrChar{#1}{2}}&\cell{\StrChar{#1}{3}}& \cell{\StrChar{#1}{4}}& \cell{\StrChar{#1}{5}}&\cell{\StrChar{#1}{6}}&\cell{\StrChar{#1}{7}}&\cell{\StrChar{#1}{8}}&\cell{\StrChar{#1}{9}}&\cell{\StrChar{#1}{10}}&\cell{\StrChar{#1}{11}}&\cell{\StrChar{#1}{12}}&\cell{\StrChar{#1}{13}}&\cell{\StrChar{#1}{14}}&\cell{\StrChar{#1}{15}}&\cell{\StrChar{#1}{16}}&\cell{\StrChar{#1}{17}}&\cell{\StrChar{#1}{18}}&\cell{\StrChar{#1}{19}}}
+   \newcommand{\makenumbersrow}[1]{\Large\cell{\StrMid{#1}{1}{2}}&\Large\cell{\StrMid{#1}{3}{4}}&\Large\cell{\StrMid{#1}{5}{6}}& \Large\cell{\StrMid{#1}{7}{8}}& \Large\cell{\StrMid{#1}{9}{10}}&\Large\cell{\StrMid{#1}{11}{12}}&\Large\cell{\StrMid{#1}{13}{14}}&\Large\cell{\StrMid{#1}{15}{16}}&\Large\cell{\StrMid{#1}{17}{18}}&\Large\cell{\StrMid{#1}{19}{20}}&\Large\cell{\StrMid{#1}{21}{22}}&\Large\cell{\StrMid{#1}{23}{24}}&\Large\cell{\StrMid{#1}{25}{26}}&\Large\cell{\StrMid{#1}{27}{28}}&\Large\cell{\StrMid{#1}{29}{30}}&\Large\cell{\StrMid{#1}{31}{32}}&\Large\cell{\StrMid{#1}{33}{34}}&\Large\cell{\StrMid{#1}{35}{36}}&\Large\cell{\StrMid{#1}{37}{38}}}
+ \newcommand{\makestrip}[3]{
+		{\vskip 1pt \small{\cipher { Cipher, }{ Key = }\key} \hfil}		
+		\begin{tabular}{ |*{19}{c|}}
+		\hline
+			\makerow{#1}\\ \hline
+			\makerow{#2}\\ \hline
+			\ifthenelse{\boolean{numbers}}{\makenumbersrow{#3}}{\makerow{#3}}\\ \hline 
+			\end{tabular}		 
+		 \hdashrule[-.5ex]{\textwidth}{1pt}{3mm}
+		}
+\includegraphics{logo_small}\hrule
+
+    \center\LARGE\setlength{\tabcolsep}{3pt}
+    \vskip-12pt
+    \hdashrule[-.5ex]{\textwidth}{1pt}{3mm} 
+    \vskip \stripskip
+    \texttt{
+    \vbox {  
+    \makestrip{\oneone}{\onetwo}{\onethree}
+   }
+    \vbox { 
+    \vskip \stripskip
+    \makestrip{\twoone}{\twotwo}{\twothree}
+    }
+    \vbox {
+        \vskip \stripskip 
+      \makestrip{\threeone}{\threetwo}{\threethree}
+    }
+       \vbox { 
+           \vskip \stripskip
+      \makestrip{\fourone}{\fourtwo}{\fourthree}
+    }
+    \vbox { 
+        \vskip \stripskip
+      \makestrip{\fiveone}{\fivetwo}{\fivethree}
+    }
+       \vbox { 
+           \vskip \stripskip
+      \makestrip{\sixone}{\sixtwo}{\sixthree}
+    }
+ }
+%  {\footnotesize{\it{This is the footer}}}
+% For many users, the previous commands will be enough.
+% If you want to directly input Unicode, add an Input Menu or Keyboard to the menu bar 
+% using the International Panel in System Preferences.
+% Unicode must be typeset using a font containing the appropriate characters.
+% Remove the comment signs below for examples.
+
+% \newfontfamily{\A}{Geeza Pro}
+% \newfontfamily{\H}[Scale=0.9]{Lucida Grande}
+% \newfontfamily{\J}[Scale=0.85]{Osaka}
+
+% Here are some multilingual Unicode fonts: this is Arabic text: {\A السلام عليكم}, this is Hebrew: {\H שלום}, 
+% and here's some Japanese: {\J 今日は}.
+\end{document}  

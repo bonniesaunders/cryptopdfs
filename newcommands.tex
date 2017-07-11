@@ -1,0 +1,60 @@
+\newcommand{\messagename}{Message Name}
+\newcommand{\cipher}{Caesar }
+\newcommand{\key}{3}
+%numbers is true if the message comes in numbers
+\newboolean{numbers}
+\setboolean{numbers}{false}
+%numtable is true if you want numbers in the ciphertable
+\newboolean{numtable}
+\setboolean{numtable}{true}
+%numpages is the number of pages needed for the message
+\newcount\numpages
+\numpages=2
+\newcommand{\ccmessagefontsize}{14}%fontsize for message letters
+\newcommand{\ccmessagebreak}{18pt}%space between lines in the message
+\newcommand{\ccmessagenumfontsize}{12}%fontsize for message letters
+\newcommand{\cctablefontsize}{14}%fontsize for cipher table letters
+\newcommand{\nfs}{\fontsize{9}{9}\selectfont}%fontsize for cipher table numbers
+\newcommand{\lfs}{\fontsize{10}{10}\selectfont\texttt}%fontsize for cipher table numbers
+\newcommand{\topmessageskip}{\vskip 28pt}
+\newcounter{chrnum}
+\newcounter{chrnumtwo}
+%strlen is the number of chacters that prints in one line of the message
+\newcount \strlen 
+\ifthenelse{\boolean{numbers}}{\strlen=99}{\strlen=40}
+%    \numpages=4
+\newcommand{\oneone}{abcde fghij klmno pqrst uvwxy z}
+\newcommand{\onetwo}{00 01 02 03 04 \ \ \ 05 06 07 08 09 \ \ \ 10 11 12 13 14 \ \ \ 15 16 17 18 19 \ \ \  20 21 22 23 24 \ \ \ 25}
+\newcommand{\twoone}{abcde fghij klmno pqrst uvwxy z}
+\newcommand{\twotwo}{00 01 02 03 04 \ \ \ 05 06 07 08 09 \ \ \ 10 11 12 13 14 \ \ \ 15 16 17 18 19 \ \ \  20 21 22 23 24 \ \ \ 25}
+\newcommand{\threeone}{ } 
+\newcommand{\threetwo}{JFDVNYVIV ZE SVUWFIU TFLEKP, MZIXZEZR.}
+\newcommand{\fourone}{ }
+\newcommand{\fourtwo}{YV CVWK VETIPGKVU DVJJRXVJ KYRK IVMVRC KYV }
+\newcommand{\fiveone}{ }
+\newcommand{\fivetwo}{CFTRKZFE. KYVP YRMV EVMVI SVVE TIRTBVU. XF }
+\newcommand{\sixone}{ }
+\newcommand{\sixtwo}{KF KYV TFDZTJ JVTKZFE FW TIPGKFTCLS.FIX KF}
+\newcommand{\sevenone}{ }
+\newcommand{\seventwo}{IVRU KYV NYFCV JKFIP.}
+\newcommand{\eightone}{ }
+\newcommand{\eighttwo}{KNF YLEUIVU PVRIJ RXF, KYFDRJ A. SVRCV }
+\newcommand{\nineone}{ }
+\newcommand{\ninetwo}{SLIZVU R KIVRJLIV FW XFCU REU JZCMVI }
+\newcommand{\tenone}{ } 
+\newcommand{\tentwo}{JFDVNYVIV ZE SVUWFIU TFLEKP, MZIXZEZR.}
+\newcommand{\elevenone}{ }
+\newcommand{\eleventwo}{YV CVWK VETIPGKVU DVJJRXVJ KYRK IVMVRC KYV }
+\newcommand{\twelveone}{ }
+\newcommand{\twelvetwo}{CFTRKZFE. KYVP YRMV EVMVI SVVE TIRTBVU. XF }
+\newcommand{\thirteenone}{ }
+\newcommand{\thirteentwo}{KF KYV TFDZTJ JVTKZFE FW TIPGKFTCLS.FIX KF}
+\newcommand{\fourteenone}{ }
+\newcommand{\fourteentwo}{IVRU KYV NYFCV JKFIP.}
+%
+\newcommand{\stripskip}{-1pt}
+\renewcommand{\arraystretch}{1.2}
+\newcommand{\redcell}[1]{\textcolor{red}{\hbox to 15pt{#1\hfil}}} 
+\newcommand{\redcellnum}[1]{\fontsize{12}{12}\textcolor{red}{\hbox to 1.5em{#1\hfil}}} 
+\newcommand{\cell}[1]{\hbox to 15pt{#1\hfil}}
+\newcommand{\tcell}[1]{\nfs{\hbox to 5pt{#1\hfil}}}
